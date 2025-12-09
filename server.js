@@ -46,6 +46,9 @@ const Produk = mongoose.model('Produk', produkSchema);
 const Transaksi = mongoose.model('Transaksi', transaksiSchema);
 
 // ========== API PRODUK ==========
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"))
+})
 
 // Get semua produk
 app.get('/api/produk', async (req, res) => {
