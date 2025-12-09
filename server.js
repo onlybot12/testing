@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Koneksi MongoDB
-mongoose.connect('mongodb://localhost:27017/kasir_db', {
+mongoose.connect('mongodb+srv://Maulanaa:5q1PrEZUUJkY4ioF@cluster0.rgcpg7g.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
