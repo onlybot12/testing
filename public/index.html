@@ -1,1 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Kasir</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🛒 Aplikasi Kasir</h1>
+      <nav>
+        <button class="nav-btn active" onclick="showPage('kasir')">Kasir</button>
+        <button class="nav-btn" onclick="showPage('produk')">Kelola Produk</button>
+        <button class="nav-btn" onclick="showPage('laporan')">Laporan</button>
+      </nav>
+    </header>
 
+    <!-- HALAMAN KASIR -->
+    <div id="page-kasir" class="page active">
+      <div class="main-content">
+        <div class="section">
+          <h2>Daftar Produk</h2>
+          <div id="daftar-produk" class="produk-grid"></div>
+        </div>
+
+        <div class="section">
+          <h2>Keranjang Belanja</h2>
+          <div id="keranjang" class="keranjang-content">
+            <p class="empty-message">Keranjang masih kosong</p>
+          </div>
+
+          <div id="pembayaran" class="pembayaran" style="display: none;">
+            <div class="total-section">
+              <div class="total-row">
+                <span>Total:</span>
+                <span id="total-harga">Rp 0</span>
+              </div>
+              <div class="total-row keuntungan">
+                <span>Keuntungan:</span>
+                <span id="total-keuntungan">Rp 0</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="uang-bayar">Uang Bayar:</label>
+              <input type="number" id="uang-bayar" placeholder="Masukkan jumlah uang">
+            </div>
+
+            <div id="kembalian-section" style="display: none;" class="kembalian-section">
+              <h3>Kembalian: <span id="kembalian">Rp 0</span></h3>
+            </div>
+
+            <div id="error-section" style="display: none;" class="error-section">
+              <p id="error-message"></p>
+            </div>
+
+            <button id="btn-selesai" class="btn btn-success">Selesai Transaksi</button>
+            <button id="btn-reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HALAMAN KELOLA PRODUK -->
+    <div id="page-produk" class="page">
+      <div class="section">
+        <h2>Tambah Produk Baru</h2>
+        <form id="form-produk" class="form-produk">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nama Produk</label>
+              <input type="text" id="nama-produk" required>
+            </div>
+            <div class="form-group">
+              <label>Harga Beli (Modal)</label>
+              <input type="number" id="harga-beli" required>
+            </div>
+            <div class="form-group">
+              <label>Harga Jual</label>
+              <input type="number" id="harga-jual" required>
+            </div>
+            <div class="form-group">
+              <label>Stok</label>
+              <input type="number" id="stok-produk" value="0" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success">Simpan Produk</button>
+        </form>
+      </div>
+
+      <div class="section">
+        <h2>Daftar Produk</h2>
+        <div class="table-container">
+          <table id="tabel-produk">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Harga Beli</th>
+                <th>Harga Jual</th>
+                <th>Margin</th>
+                <th>Stok</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- HALAMAN LAPORAN -->
+    <div id="page-laporan" class="page">
+      <div class="section">
+        <h2>Laporan Penjualan</h2>
+        <div class="filter-section">
+          <div class="form-group">
+            <label>Dari Tanggal:</label>
+            <input type="date" id="dari-tanggal">
+          </div>
+          <div class="form-group">
+            <label>Sampai Tanggal:</label>
+            <input type="date" id="sampai-tanggal">
+          </div>
+          <button class="btn btn-primary" onclick="loadLaporan()">Tampilkan</button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Penjualan</h3>
+          <p class="stat-value" id="stat-penjualan">Rp 0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Modal</h3>
+          <p class="stat-value" id="stat-modal">Rp 0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Keuntungan</h3>
+          <p class="stat-value success" id="stat-keuntungan">Rp 0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Margin Keuntungan</h3>
+          <p class="stat-value" id="stat-margin">0%</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Produk Terlaris</h2>
+        <div class="table-container">
+          <table id="tabel-terlaris">
+            <thead>
+              <tr>
+                <th>Produk</th>
+                <th>Terjual</th>
+                <th>Total Pendapatan</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Riwayat Transaksi</h2>
+        <div class="table-container">
+          <table id="tabel-transaksi">
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Total</th>
+                <th>Keuntungan</th>
+                <th>Detail</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
